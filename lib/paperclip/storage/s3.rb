@@ -138,7 +138,10 @@ module Paperclip
           end
 
           unless @options[:url].to_s.match(/^:s3.*url$/) || @options[:url] == ":asset_host"
-            @options[:path] = @options[:path].gsub(/:url/, @options[:url]).gsub(/^:rails_root\/public\/system/, '')
+            # changed @options[:url] to @options[:url].to_s because
+            # @options[:url] can resolve as a keyword instead of a
+            # string, causing an exception
+            @options[:path] = @options[:path].gsub(/:url/, @options[:url].to_s).gsub(/^:rails_root\/public\/system/, '')
             @options[:url]  = ":s3_path_url"
           end
           @options[:url] = @options[:url].inspect if @options[:url].is_a?(Symbol)
